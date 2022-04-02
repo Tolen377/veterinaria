@@ -122,7 +122,7 @@
         {data: 'action', name: 'action', orderable: false, searchable: false},
     ]
   });
-  
+
   $('body').on('click', '.deleteBook', function () {
     var id = $(this).data("id");
     console.log(id);
@@ -140,8 +140,6 @@
         });
     }
   });
-
-
    $(document).on("click", ".editBook", function(){
     var id = $(this).data('id');
       $.get("{{ url('Admin/gestionCitas') }}" +'/' + id +'/edit', function (data) {
@@ -184,20 +182,19 @@
               icon: "success",
               text: "Registrado correctamente",
               timer: 1000
-				    });
+			});
             
             $("#modalCRUD").modal("hide");
-            
               table.draw();
           },
           error: function (data) {
           }
       });
   });
-
-  $('button[type=reset]').click(function(){
-    $('#id').val('');
-  });
-  });
+    $('#modalCRUD').on('hidden.bs.modal', function (event) {
+      console.log('se cerro modal');
+      $('#id').val('');
+    });
+});
 </script>
 @endsection

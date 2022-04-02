@@ -30,16 +30,14 @@ class ProductoController extends Controller
         }
         return view('admin.gestionProductos', compact('productos'));
     }
-    public function create(Request $request)
-    {
-       
-    }
     public function store(Request $request)
     {
         if ($request->hasFile('foto')) {
             $path = $request->file('foto')->store('uploads','public');
-        } else {
-            $path = 'Ruta no encontrada';
+        } elseif (!empty($request->path)) {
+            $path = $request->path;
+        }else {
+            $path = "Ruta no encontrada";
         }
 
         Producto::updateOrCreate(
@@ -47,20 +45,15 @@ class ProductoController extends Controller
             ['nombre' => $request->nombre, 'precio' => $request->precio,'detalles' => $request->detalles,'path' => $path]);
         return response()->json(['success'=>'Producto registrado correctamente.']); 
     }
-    public function show(Producto $producto)
+    public function edit($id)
     {
-        
-    }
-    public function edit(Producto $producto)
-    {
-    
-    }
-    public function update(Request $request, Producto $producto)
-    {
+        return Producto::findOrFail($id);   
     }
     public function destroy($id)
     {
-        Producto::find($id)->delete();
+        $producto = Producto::find($id);
+        unlink(storage_path('app/public/'.$producto -> path));
+        $producto -> delete();
         return response()->json(['success'=>'Producto borrado exitosamente.']);   
     }
 }

@@ -46,7 +46,8 @@
         <form id="ProductoForm">
             <div class="modal-body">
                 <div class="form-group">
-                <input type="hidden" name="id" id="id"> 
+                    <input type="hidden" name="id" id="id"> 
+                    <input type="hidden" name="path" id="path"> 
                     <label for="nombre" class="col-form-label">Nombre:</label>
                     <input type="text" class="form-control" id="nombre" name="nombre" required>
                 </div>                
@@ -61,7 +62,7 @@
                 <div class="form-group">
                     <label for="foto" class="col-form-label">Imagen:</label>
                     <input type="file" class="form-control" id="foto" name="foto" required>
-                </div>           
+                </div>          
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
@@ -109,6 +110,22 @@
             $(".modal-title").text("Nuevo Producto");            
             $("#modalCRUD").modal("show");        
         });
+        $(document).on("click", ".editBook", function(){ 
+            $("#ProductoForm").trigger("reset");       
+            var id = $(this).data('id');
+            $.get("{{ url('Admin/gestionProductos') }}" +'/' + id +'/edit', function (data) {
+                console.log(data);
+                $('#id').val(data.id);
+                $('#path').val(data.path);
+                $('#nombre').val(data.nombre);
+                $('#precio').val(data.precio);
+                $('#detalles').val(data.detalles);        
+            })
+            $(".modal-header").css("background-color", "#4e73df");
+            $(".modal-header").css("color", "white");
+            $(".modal-title").text("Editar Producto");            
+            $("#modalCRUD").modal("show");  
+        });
         $('#saveBtn').click(function (e) {
             e.preventDefault();
             var data = new FormData($('#ProductoForm')[0]);
@@ -138,6 +155,12 @@
         });
         $('button[type=reset]').click(function(){
             $('#id').val('');
+            $('#path').val('');
+        });
+        $('#modalCRUD').on('hidden.bs.modal', function (event) {
+            console.log('se cerro modal');
+            $('#id').val('');
+            $('#path').val('');
         });
         $('body').on('click', '.deleteBook', function () {      
             var id = $(this).data("id");

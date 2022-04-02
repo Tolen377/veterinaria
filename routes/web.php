@@ -32,4 +32,6 @@ Route::group(['prefix' => 'Admin',  'middleware' => 'admin'], function() {
     Route::get('gestionProductos', [ProductoController::class, 'index'])->name('Admin.gestionProductos');
     Route::post('gestionProductos', [ProductoController::class, 'store'])->name('gestionProductos.store');
     Route::delete('gestionProductos/delete/{id}', [ProductoController::class, 'destroy'])->name('gestionProductos.delete');
+    Route::get('gestionProductos/{id}/edit', [ProductoController::class, 'edit'])->name('gestionProductos.edit');
+
 });
